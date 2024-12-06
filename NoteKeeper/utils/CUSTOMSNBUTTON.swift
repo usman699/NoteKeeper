@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct CUSTOMSNBUTTON: View {
+    var title: String
+    var action :() ->()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+     
+            Button( action: action){
+                
+                Text(title)
+                    .foregroundStyle(.white)
+                    .frame(height: 70)
+                    .frame(maxWidth: .infinity )
+                
+            }
+           
+          
+            .background(.black)
+            .cornerRadius(18)
+            .padding()
     }
 }
 
-#Preview {
-    CUSTOMSNBUTTON()
-}
