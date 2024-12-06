@@ -10,7 +10,7 @@ import SwiftUI
 struct SplashScreen: View {
     @State var count = 0
     
-    var maintitles: [String] =  [ "Stay update with your Notes", "We store all your Data so you can access anywhere ", "Secure login"]
+    var maintitles: [String] =  [ "Stay update with your Notes", "We store all your Data so you can access anywhere", "Secure login"]
     var  images : [String] = ["10720", "20945549","4957136"]
     var body: some View {
     
@@ -37,7 +37,7 @@ struct SplashScreen: View {
                 .foregroundStyle(.black.opacity(0.5))
             
             Spacer()
-            CUSTOMSNBUTTON(title: "Next", action: {
+            CUSTOMSNBUTTON(title:   count == 2 ? "Go to Login" :"Next", action: {
                 print(count)
                 if  count > 1{
                     count = 0
