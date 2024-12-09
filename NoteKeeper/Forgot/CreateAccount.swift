@@ -1,73 +1,76 @@
+////
+////  Login.swift
+////  NoteKeeper
+////
+////  Created by Spark Solutionz Inc on 06/12/2024.
+////
 //
-//  Login.swift
-//  NoteKeeper
+//import SwiftUI
 //
-//  Created by Spark Solutionz Inc on 06/12/2024.
+//struct CreateAccount: View {
+//    @State var showDetail = false
+//    var body: some View {
+//     
+//        ZStack {
+//        
+//            VStack{
+//                Spacer()
+//                
+//                HStack{
+//                    Text("Create  your account")
+//                        .font(.largeTitle)
+//                }
+//                
+//                Textfeild(hinttext: "Enter UserName"   , sharedState: sharedState)
+//                Spacer()
+//                    .frame(height: 20)
+//                Textfeild(hinttext: "Enter Email", email: true   , sharedState: sharedState )
+//                Spacer()
+//                    .frame(height: 20)
+//                
+//                Textfeild(hinttext: "Enter Password"   , sharedState: sharedState)
+//                Spacer()
+//                    .frame(height: 20)
+//                Textfeild(hinttext: "Re-type Password"   , sharedState: sharedState)
+//                Spacer()
+//                    .frame(height: 20)
+//                
+//                
+//                CUSTOMSNBUTTON(title: "Create A Account", action: {
+//                    
+//                })
+//                HStack{
+//                    Text("Go to")
+//                        .foregroundStyle(.gray)
+//                        .font(.system(size: 20))
+//                     
+//                    Text("Login?")
+//                        .fullScreenCover(isPresented: $showDetail) {
+//                            Login()
+//                            
+//                            }
+//                        .transaction { transaction in
+//                            transaction.disablesAnimations = true
+//                        }
+//                        .font(.system(size: 20))
+//                        .fontWeight(.bold)
+//                        .onTapGesture {
+//                            showDetail.toggle()
+//                                  }
+//                    Spacer()
+//                }
+//                .padding(.leading , 24)
+//                Spacer()
+//                
+//            }
+//        }
+//        
+//        
+//    }
+//}
 //
-
-import SwiftUI
-
-struct CreateAccount: View {
-    var body: some View {
-     
-        ZStack {
-            Image("v915-wit-004-d")
-                .resizable()
-                 // Ensures the image fills the entire area
-                .ignoresSafeArea() // Extends the image to the full screen
-            
-            VStack{
-                Spacer()
-                Spacer()
-                Spacer()
-                HStack{
-                    Text("Create  your account")
-                        .font(.largeTitle)
-                }
-                
-                Textfeild(hinttext: "Enter UserName")
-                Spacer()
-                    .frame(height: 20)
-                Textfeild(hinttext: "Enter Email")
-                Spacer()
-                    .frame(height: 20)
-                
-                Textfeild(hinttext: "Enter Password")
-                Spacer()
-                    .frame(height: 20)
-                Textfeild(hinttext: "Re-type Password")
-                Spacer()
-                    .frame(height: 20)
-                
-                
-                CUSTOMSNBUTTON(title: "Create A Account", action: {
-                    
-                })
-                HStack{
-                    Text("Go to")
-                        .foregroundStyle(.gray)
-                        .font(.system(size: 20))
-                     
-                    Text("Login?")
-                        .font(.system(size: 20))
-                        .fontWeight(.bold)
-                        .onTapGesture {
-                            print("forgot")
-                                  }
-                    Spacer()
-                }
-                .padding(.leading , 24)
-                Spacer()
-                
-            }
-        }
-        
-        
-    }
-}
-
-
-#Preview {
-    forgot()
-}
-
+//
+//#Preview {
+//    CreateAccount()
+//}
+//

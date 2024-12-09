@@ -24,7 +24,7 @@ struct CUSTOMSNBUTTON: View {
            
           
             .background(.black)
-            .cornerRadius(18)
+            .cornerRadius(24)
             .padding()
     }
 }
