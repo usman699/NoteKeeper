@@ -10,6 +10,7 @@ import SwiftUI
 struct SplashScreen: View {
     @State var count = 0
     @State var showDetail = false
+    @State var isloading = false
     var maintitles: [String] =  [ "Stay update with your Notes", "We store all your Data so \n you  can access anywhere", "Secure login"]
     var  images : [String] = ["10720", "20945549","4957136"]
     var body: some View {
@@ -37,7 +38,7 @@ struct SplashScreen: View {
             
             
             
-            CUSTOMSNBUTTON(title:   count == 2 ? "Go to Login" :"Next", action: {
+            CUSTOMSNBUTTON(Colors: .black, title:   count == 2 ? "Go to Login" :"Next", isloading:  $isloading , action: {
                 print("acout")
                 if  count > 1  {
                     
@@ -56,7 +57,7 @@ struct SplashScreen: View {
                            
             )
             .fullScreenCover(isPresented: $showDetail) {
-                    Login()
+                Login()
                 
                 }
             .transaction { transaction in
