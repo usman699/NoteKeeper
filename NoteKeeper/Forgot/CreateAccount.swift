@@ -18,6 +18,7 @@ struct CreateAccount: View {
     @State var repassword = ""
     @State var isloading = false
     @State var showDetail = false
+    @State var background = false
     var body: some View {
      
         ZStack {
@@ -44,12 +45,13 @@ struct CreateAccount: View {
                     }
                     .onChange(of: UserName) { newValue in
                     
-//                        if  passwordText.count >= 4{
-//                            background = true
-//                        }
-//                        if newValue == ""  || newValue == "" {
-//                            background = false
-//                        }
+                        if newValue.count < 4 {
+                            background = false
+                        }
+                        
+                        if newValue == ""   {
+                            background = false
+                        }
                     }
                     .padding()
                     .overlay(
@@ -79,7 +81,12 @@ struct CreateAccount: View {
                         
                     }
                     .onChange(of: emailtext) { newValue in
-                    
+                        if newValue.count < 4 {
+                            background = false
+                        }
+                        if newValue == ""   {
+                            background = false
+                        }
 //                        if  passwordText.count >= 4{
 //                            background = true
 //                        }
@@ -116,7 +123,12 @@ struct CreateAccount: View {
                         
                     }
                     .onChange(of: password) { newValue in
-                    
+                        if newValue.count < 4 {
+                            background = false
+                        }
+                        if newValue == ""   {
+                            background = false
+                        }
 //                        if  passwordText.count >= 4{
 //                            background = true
 //                        }
@@ -150,14 +162,18 @@ struct CreateAccount: View {
              
                         
                     }
-                    .onChange(of: password) { newValue in
-                    
-//                        if  passwordText.count >= 4{
-//                            background = true
-//                        }
-//                        if newValue == ""  || newValue == "" {
-//                            background = false
-//                        }
+                    .onChange(of: repassword) { newValue in
+                       
+                        if newValue.count >= 4
+                            ||  emailtext.count  >= 4
+                            || password.count  >= 4
+                            || repassword.count  >= 4
+                            || UserName .count >= 4{
+                            background = true
+                        }
+                        if newValue == ""{
+                            background = false
+                        }
                     }
                     .padding()
                     .overlay(
@@ -171,12 +187,15 @@ struct CreateAccount: View {
                     .padding(.horizontal, 20)
                 
                 Spacer()
-                                   .frame(height: 20)
+                .frame(height: 20)
                 
                 
 
                 
-                CUSTOMSNBUTTON(Colors: Color.black, title: "Create A Account", isloading: $isloading , action: {
+                CUSTOMSNBUTTON(Colors: background ? Color.black : Color.gray  ,
+                               title: "Create A Account",
+                               isloading: $isloading ,
+                               action: {
                     
                 })
                 HStack{
