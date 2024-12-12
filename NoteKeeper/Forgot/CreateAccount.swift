@@ -14,15 +14,22 @@ struct CreateAccount: View {
     @FocusState var  focusedField : Field?
     @State var UserName = ""
     @State var emailtext = ""
+    @State var Errortext = ""
+    @State var ErrorBool = false
+    @State var EmailText = ""
+    @State var firstPassword = ""
+    @State var ErrorEmail = false
+    @State var ErrorPassword = false
+    @State var ErrorPasswordText = ""
     @State var password = ""
     @State var repassword = ""
     @State var isloading = false
     @State var showDetail = false
     @State var background = false
     var body: some View {
-     
-        ZStack {
         
+        ZStack {
+            
             VStack{
                 Spacer()
                 
@@ -43,15 +50,18 @@ struct CreateAccount: View {
                         focusedField = .email
                         
                     }
-                    .onChange(of: UserName) { newValue in
-                    
-                        if newValue.count < 4 {
-                            background = false
+                
+                    .onChange(of: UserName) { oldvalue ,newValue in
+                
+                        print(oldvalue.count , newValue.count)
+                        if oldvalue.count < 4 || newValue.count < 4 || oldvalue == "" {
+                            Errortext = "Enter at least 4 Chracters Long"
+                            ErrorBool = true
+                        }
+                        else {
+                            ErrorBool = false
                         }
                         
-                        if newValue == ""   {
-                            background = false
-                        }
                     }
                     .padding()
                     .overlay(
@@ -64,9 +74,25 @@ struct CreateAccount: View {
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .padding(.horizontal, 20)
                 
-                Spacer()
-                                   .frame(height: 30)
                 
+                HStack{
+                    ErrorBool
+                    
+                    ?
+                    Text(Errortext)
+                    
+                        .foregroundStyle(.red)
+                       
+                    :
+                    Text("")
+                    Spacer()
+                } .padding(.leading, 20)
+                    .frame(height: ErrorBool ? 50 : 0)
+ 
+                Spacer()
+                    .frame(height:  ErrorBool ? 0 : 20)
+            
+               
                 
                 
                 TextField("Enter Email", text: $emailtext)
@@ -80,19 +106,21 @@ struct CreateAccount: View {
                         focusedField = .password
                         
                     }
-                    .onChange(of: emailtext) { newValue in
-                        if newValue.count < 4 {
-                            background = false
+                    .onChange(of: emailtext) { oldvalue ,newValue in
+                        
+                       var cehck =  isValidEmail(oldvalue)
+                        if cehck == false  {
+                            print(cehck)
+                            EmailText = "Enter a valid Email"
+                            ErrorEmail = true
                         }
-                        if newValue == ""   {
-                            background = false
+                        else {
+                            EmailText = ""
+                            print(cehck)
+                            ErrorEmail  = false
                         }
-//                        if  passwordText.count >= 4{
-//                            background = true
-//                        }
-//                        if newValue == ""  || newValue == "" {
-//                            background = false
-//                        }
+                        
+                        
                     }
                     .padding()
                     .overlay(
@@ -104,14 +132,30 @@ struct CreateAccount: View {
                     )
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .padding(.horizontal, 20)
-                
+                HStack{
+                    ErrorEmail
+                    
+                    ?
+                    Text(EmailText)
+                    
+                        .foregroundStyle(.red)
+                       
+                    :
+                    Text("")
+                    Spacer()
+                } .padding(.leading, 20)
+                    .frame(height: ErrorEmail ? 50 : 0)
                 Spacer()
-                                   .frame(height: 30)
+                    .frame( height: ErrorEmail ? 0 : 20)
+            
                 
                 
                 
                 
-                TextField("Enter Password", text: $password)
+                
+                
+                
+                SecureField("Enter Password", text: $password)
                     .autocapitalization(.none)
                 
                 
@@ -122,19 +166,12 @@ struct CreateAccount: View {
                         focusedField = .repassword
                         
                     }
-                    .onChange(of: password) { newValue in
-                        if newValue.count < 4 {
-                            background = false
+                    .onChange(of: password) {oldvalue , newValue in
+                        firstPassword = oldvalue
+                        if oldvalue.count < 8 {
+                            ErrorPassword = true
+                            Errortext = "Password Must Be 8 Characters long"
                         }
-                        if newValue == ""   {
-                            background = false
-                        }
-//                        if  passwordText.count >= 4{
-//                            background = true
-//                        }
-//                        if newValue == ""  || newValue == "" {
-//                            background = false
-//                        }
                     }
                     .padding()
                     .overlay(
@@ -146,12 +183,16 @@ struct CreateAccount: View {
                     )
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .padding(.horizontal, 20)
+           
+                
                 
                 Spacer()
-                                   .frame(height: 30)
+                    .frame(height: 30)
                 
                 
-                TextField("Re-Type Password", text: $repassword)
+                
+                
+                SecureField("Re-Type Password", text: $repassword)
                     .autocapitalization(.none)
                 
                 
@@ -159,20 +200,17 @@ struct CreateAccount: View {
                     .submitLabel( .done)
                     .onSubmit {
                         
-             
+                        
                         
                     }
-                    .onChange(of: repassword) { newValue in
-                       
-                        if newValue.count >= 4
-                            ||  emailtext.count  >= 4
-                            || password.count  >= 4
-                            || repassword.count  >= 4
-                            || UserName .count >= 4{
-                            background = true
+                    .onChange(of: repassword) { oldvalue , newValue in
+                        if firstPassword == oldvalue {
+                            ErrorPasswordText = ""
+                            ErrorPassword = false
                         }
-                        if newValue == ""{
-                            background = false
+                        else {
+                            ErrorPasswordText = "Password Does not match"
+                            ErrorPassword = true
                         }
                     }
                     .padding()
@@ -185,12 +223,35 @@ struct CreateAccount: View {
                     )
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .padding(.horizontal, 20)
+       
                 
-                Spacer()
-                .frame(height: 20)
+                HStack{
+                    ErrorPassword
+                    
+                    ?
+                    Text(ErrorPasswordText)
+                    
+                        .foregroundStyle(.red)
+                       
+                    :
+                    Text("")
+                    Spacer()
+                } .padding(.leading, 20)
+                    .frame(height: ErrorPassword ? 50 : 0)
                 
                 
-
+                
+//
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
                 CUSTOMSNBUTTON(Colors: background ? Color.black : Color.gray  ,
                                title: "Create A Account",
@@ -202,12 +263,12 @@ struct CreateAccount: View {
                     Text("Go to")
                         .foregroundStyle(.gray)
                         .font(.system(size: 20))
-                     
+                    
                     Text("Login?")
                         .fullScreenCover(isPresented: $showDetail) {
                             Login()
                             
-                            }
+                        }
                         .transaction { transaction in
                             transaction.disablesAnimations = true
                         }
@@ -215,7 +276,7 @@ struct CreateAccount: View {
                         .fontWeight(.bold)
                         .onTapGesture {
                             showDetail.toggle()
-                                  }
+                        }
                     Spacer()
                 }
                 .padding(.leading , 24)
@@ -223,11 +284,19 @@ struct CreateAccount: View {
                 
             }
         }
+       
+    }
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: email)
+    }
+    
+    func checkpassword(cehck: String ){
         
         
     }
-}
 
+}
 
 #Preview {
     CreateAccount()
