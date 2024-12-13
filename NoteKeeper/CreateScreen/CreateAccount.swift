@@ -47,22 +47,19 @@ struct CreateAccount: View {
                     .submitLabel( .next)
                     .onSubmit {
                         
-                        focusedField = .email
-                        
-                    }
-                
-                    .onChange(of: UserName) { oldvalue ,newValue in
-                
-                        print(oldvalue.count , newValue.count)
-                        if oldvalue.count < 4 || newValue.count < 4 || oldvalue == "" {
+                        if UserName.count < 4 || UserName.count < 4 || UserName == "" {
                             Errortext = "Enter at least 4 Chracters Long"
                             ErrorBool = true
                         }
                         else {
+                            focusedField = .email
                             ErrorBool = false
                         }
+                       
                         
                     }
+                
+                   
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 25)
@@ -102,26 +99,23 @@ struct CreateAccount: View {
                     .focused($focusedField, equals:  .email)
                     .submitLabel( .next)
                     .onSubmit {
-                        
-                        focusedField = .password
-                        
-                    }
-                    .onChange(of: emailtext) { oldvalue ,newValue in
-                        
-                       var cehck =  isValidEmail(oldvalue)
-                        if cehck == false  {
-                            print(cehck)
-                            EmailText = "Enter a valid Email"
-                            ErrorEmail = true
-                        }
-                        else {
-                            EmailText = ""
-                            print(cehck)
-                            ErrorEmail  = false
-                        }
+                        var cehck =  isValidEmail(emailtext)
+                         if cehck == false  {
+                             print(cehck)
+                             EmailText = "Enter a valid Email"
+                             ErrorEmail = true
+                         }
+                         else {
+                             focusedField = .password
+                             EmailText = ""
+                             
+                             ErrorEmail  = false
+                         }
+                         
                         
                         
                     }
+                   
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 25)
@@ -162,17 +156,22 @@ struct CreateAccount: View {
                     .focused($focusedField, equals:  .password)
                     .submitLabel( .next)
                     .onSubmit {
-                        
-                        focusedField = .repassword
-                        
-                    }
-                    .onChange(of: password) {oldvalue , newValue in
-                        firstPassword = oldvalue
-                        if oldvalue.count < 8 {
+                        firstPassword = password
+                        if password.count < 8 {
                             ErrorPassword = true
-                            Errortext = "Password Must Be 8 Characters long"
+                            ErrorPasswordText = "Password Must Be 8 Characters long"
                         }
+                        else {
+                            
+                            ErrorPassword = false
+                            
+                            ErrorPasswordText  = ""
+                            focusedField = .repassword
+                        }
+                        
+                        
                     }
+                    
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 25)
@@ -200,11 +199,7 @@ struct CreateAccount: View {
                     .submitLabel( .done)
                     .onSubmit {
                         
-                        
-                        
-                    }
-                    .onChange(of: repassword) { oldvalue , newValue in
-                        if firstPassword == oldvalue {
+                        if firstPassword == repassword {
                             ErrorPasswordText = ""
                             ErrorPassword = false
                         }
@@ -212,6 +207,19 @@ struct CreateAccount: View {
                             ErrorPasswordText = "Password Does not match"
                             ErrorPassword = true
                         }
+                    
+                        if ErrorBool == false  && ErrorPassword == false  && ErrorEmail == false   {
+                            
+                            background = true
+                        }
+                        else {
+                            background = false
+                        }
+                        
+                        
+                    }
+                    .onChange(of: repassword) { oldvalue , newValue in
+                       
                     }
                     .padding()
                     .overlay(
@@ -257,6 +265,11 @@ struct CreateAccount: View {
                                title: "Create A Account",
                                isloading: $isloading ,
                                action: {
+                    
+                    if background == true {
+                        isloading = true
+                    }
+                    
                     
                 })
                 HStack{
